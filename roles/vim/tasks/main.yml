@@ -1,0 +1,16 @@
+---
+
+- name: Install vim
+  become_user: root
+  ansible.builtin.apt:
+    name: vim
+    state: present
+
+- name: Copy vim configuration
+  become_user: root
+  ansible.builtin.copy:
+    src: "vimrc.local"
+    dest: "/etc/vim/vimrc.local"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r

@@ -1,0 +1,16 @@
+---
+
+- name: Install git
+  become_user: root
+  ansible.builtin.apt:
+    name:
+      - git
+    state: present
+
+- name: Set global git options
+  community.general.git_config:
+    scope: global
+    name: '{{ item.key }}'
+    value: '{{ item.value }}'
+  loop: "{{ git_global_options | dict2items }}"
+  when: git_global_options is defined

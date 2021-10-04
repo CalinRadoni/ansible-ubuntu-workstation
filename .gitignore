@@ -1,0 +1,7 @@
+/tmp/
+/.venv/
+
+/inventories/*
+!/inventories/example/
+
+*.code-workspace

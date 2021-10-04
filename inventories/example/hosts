@@ -1,0 +1,5 @@
+[laptops]
+laptop_local    ansible_connection=local
+
+[desktops]
+desktop_local   ansible_connection=local

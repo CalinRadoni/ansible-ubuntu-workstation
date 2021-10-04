@@ -1,0 +1,28 @@
+---
+
+- name: Add the signing key
+  become_user: root
+  ansible.builtin.apt_key:
+    url: https://packages.microsoft.com/keys/microsoft.asc
+    keyring: /etc/apt/trusted.gpg.d/packages.microsoft.gpg
+    state: present
+
+- name: Add the repository
+  become_user: root
+  ansible.builtin.apt_repository:
+    repo: 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main'
+    filename: 'vscode'
+    state: present
+    update_cache: yes
+
+- name: Install VSCode
+  become_user: root
+  ansible.builtin.apt:
+    name: code
+    state: present
+
+- name: Install the extensions
+  vscode_extension_installer:
+    name: '{{ item }}'
+  loop: '{{ vscode_extensions }}'
+  when: vscode_extensions is defined

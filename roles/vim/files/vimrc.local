@@ -1,0 +1,14 @@
+set tabstop=4
+set softtabstop=4
+set shiftwidth=4
+set expandtab
+
+set fileformat=unix
+
+set background=dark
+syntax on
+
+set noerrorbells
+set novisualbell
+
+set encoding=utf8

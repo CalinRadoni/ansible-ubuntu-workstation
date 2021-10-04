@@ -1,0 +1,16 @@
+---
+
+kbd_profiles:
+  us_kpnav:
+    shortDescription: enr
+    description: 'English (US) with keypad as nav'
+    iso639Id: eng
+  ro_kpnav:
+    shortDescription: ror
+    description: 'Romanian with keypad as nav'
+    iso639Id: rum
+
+group_apps:
+  - openconnect
+  - network-manager-openconnect
+  - network-manager-openconnect-gnome

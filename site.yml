@@ -1,0 +1,24 @@
+---
+
+- name: 'Ansible for Ubuntu configuration'
+  hosts: all
+  become_method: sudo
+  become_user: '{{ local_user }}'
+  become: yes
+
+  roles:
+    - role: common
+      when: (common_apps is defined) or (group_apps is defined)
+
+    - role: git
+
+    - role: python
+
+    - role: vim
+
+    - role: keyboard
+      when: kbd_profiles is defined
+
+    - role: dconf
+
+    - role: vscode

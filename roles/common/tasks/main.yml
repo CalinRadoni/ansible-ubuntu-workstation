@@ -1,0 +1,17 @@
+---
+
+- name: Install common applications
+  become_user: root
+  ansible.builtin.apt:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ common_apps }}'
+  when: common_apps is defined
+
+- name: Install common group applications
+  become_user: root
+  ansible.builtin.apt:
+    name: '{{ item }}'
+    state: present
+  loop: '{{ group_apps }}'
+  when: group_apps is defined

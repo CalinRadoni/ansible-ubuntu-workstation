@@ -1,0 +1,49 @@
+---
+- name: Copy custom keyboard profiles
+  become_user: root
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/usr/share/X11/xkb/symbols/"
+    owner: root
+    group: root
+    mode: u=rw,g=r,o=r
+  loop: "{{ kbd_profiles.keys() | list }}"
+  notify:
+    - Reconfigure xkb-data
+
+- name: Add entries for language profiles
+  become_user: root
+  blockinfile:
+    path: /usr/share/X11/xkb/rules/evdev.xml
+    block: |
+      <layout>
+        <configItem>
+          <name>{{ item.key }}</name>
+          <shortDescription>{{ item.value.shortDescription }}</shortDescription>
+          <description>{{ item.value.description }}</description>
+          <languageList>
+            <iso639Id>{{ item.value.iso639Id }}</iso639Id>
+          </languageList>
+        </configItem>
+      </layout>
+    insertbefore: '</layoutList>'
+    marker: "<!-- {{ item.key }} {mark} ANSIBLE MANAGED BLOCK -->"
+    backup: yes
+  loop: "{{ kbd_profiles | dict2items }}"
+  notify:
+    - Reconfigure xkb-data
+
+- name: Create the list of keyboard profiles
+  set_fact:
+    kbd_profiles_list: "{{ kbd_profiles_list | default([]) }} + [ \"('xkb', '{{ item }}')\" ]"
+  loop: "{{ kbd_profiles.keys() | list }}"
+
+- name: Create a string from the list of the keyboard profiles
+  set_fact:
+    kbd_profiles_str: "[{{ kbd_profiles_list | join(\", \") | string }}]"
+
+- name: Set input sources for Gnome desktop
+  community.general.dconf:
+    key: "/org/gnome/desktop/input-sources/sources"
+    value: "{{ kbd_profiles_str | string }}"
+    state: present

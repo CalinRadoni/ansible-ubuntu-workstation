@@ -1,0 +1,46 @@
+---
+- name: Set the GTK theme
+  community.general.dconf:
+    key: "/org/gnome/desktop/interface/gtk-theme"
+    value: "'{{ dconf_GTK_theme }}'"
+    state: present
+  when: dconf_GTK_theme is defined
+
+- name: Auto-hide the Dock
+  community.general.dconf:
+    key: "/org/gnome/shell/extensions/dash-to-dock/dock-fixed"
+    value: "{{ dconf_fixed_dock }}"
+    state: present
+  when: dconf_fixed_dock is defined
+
+- name: Set the shortcut for terminal
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/home"
+    value: "['<Super>e']"
+    state: present
+
+- name: Set the shortcut for home folder
+  community.general.dconf:
+    key: "/org/gnome/settings-daemon/plugins/media-keys/terminal"
+    value: "['<Super>t']"
+    state: present
+
+- name: Format the list of favorite apps
+  set_fact:
+    favorite_apps_list: "{{ favorite_apps_list | default([]) }} + [ \"'{{ item }}'\" ]"
+  loop: "{{ dconf_favorite_apps }}"
+  when: dconf_favorite_apps is defined
+
+- name: Create the string of favorite apps
+  set_fact:
+    favorite_apps_str: "[{{ favorite_apps_list | join(\", \") | string }}]"
+  when:
+    - favorite_apps_list is defined
+    - favorite_apps_list | length > 0
+
+- name: Set the favorite apps
+  community.general.dconf:
+    key: "/org/gnome/shell/favorite-apps"
+    value: "{{ favorite_apps_str | string }}"
+    state: present
+  when: favorite_apps_str is defined

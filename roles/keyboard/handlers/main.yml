@@ -1,0 +1,5 @@
+---
+- name: Reconfigure xkb-data
+  become_user: root
+  command:
+    cmd: dpkg-reconfigure xkb-data
