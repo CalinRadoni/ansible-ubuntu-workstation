@@ -1,0 +1,31 @@
+---
+
+# firewalld 'needs' iptables so do not remove iptables
+
+- name: Install nftables and firewalld
+  become_user: root
+  ansible.builtin.apt:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - nftables
+    - firewalld
+
+- name: nftables and firewalld should be enabled and running
+  become_user: root
+  ansible.builtin.service:
+    name: '{{ item }}'
+    enabled: yes
+    state: started
+  loop:
+    - nftables.service
+    - firewalld.service
+
+- name: Select nftables as backend in firewalld
+  become_user: root
+  ansible.builtin.lineinfile:
+    dest: /etc/firewalld/firewalld.conf
+    regexp: "^FirewallBackend="
+    line: "FirewallBackend=nftables"
+  notify:
+    - Restart firewalld

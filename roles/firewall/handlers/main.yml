@@ -1,0 +1,7 @@
+---
+
+- name: Restart firewalld
+  become_user: root
+  ansible.builtin.service:
+    name: firewalld.service
+    state: restarted
