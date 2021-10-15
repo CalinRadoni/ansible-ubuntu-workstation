@@ -1,5 +1,12 @@
 ---
 
+- name: APT update and autoremove
+  become_user: root
+  ansible.builtin.apt:
+    update_cache: yes
+    autoremove: yes
+  changed_when: False
+
 - name: Install common applications
   become_user: root
   ansible.builtin.apt:
