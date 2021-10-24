@@ -1,0 +1,12 @@
+---
+
+- name: Install Ruby development
+  become_user: root
+  ansible.builtin.apt:
+    name: '{{ item }}'
+    state: present
+  loop:
+    - ruby-full
+    - ruby-bundler
+    - build-essential
+    - zlib1g-dev
