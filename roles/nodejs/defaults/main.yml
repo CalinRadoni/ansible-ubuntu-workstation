@@ -1,0 +1,5 @@
+---
+# As of Oct.2021, the Active LTS is 16
+# see https://nodejs.org/en/about/releases/ for more information
+
+nodejs_version: 16

@@ -1,0 +1,22 @@
+---
+
+- name: Add the signing key
+  become_user: root
+  ansible.builtin.apt_key:
+    url: https://deb.nodesource.com/gpgkey/nodesource.gpg.key
+    keyring: /etc/apt/trusted.gpg.d/nodesource.gpg
+    state: present
+
+- name: Add the repository
+  become_user: root
+  ansible.builtin.apt_repository:
+    repo: "deb [signed-by=/etc/apt/trusted.gpg.d/nodesource.gpg] https://deb.nodesource.com/node_{{ nodejs_version }}.x {{ ansible_distribution_release }} main"
+    filename: 'nodesource'
+    state: present
+    update_cache: yes
+
+- name: Install Node.js
+  become_user: root
+  ansible.builtin.apt:
+    name: nodejs
+    state: present
