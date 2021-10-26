@@ -1,6 +1,6 @@
 ---
 
-local_user: calin
+local_user_name: calin
 
 common_apps:
   - apt-transport-https
