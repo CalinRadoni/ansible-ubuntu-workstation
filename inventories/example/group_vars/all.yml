@@ -4,7 +4,6 @@ local_user_name: calin
 
 common_apps:
   - apt-transport-https
-  - librecad
   - keepassxc
 
 git_global_options:
@@ -32,4 +31,5 @@ vscode_extensions:
   - redhat.ansible
   - streetsidesoftware.code-spell-checker
   - editorconfig.editorconfig
+  - vscode-org-mode.org-mode
   - gruntfuggly.todo-tree
