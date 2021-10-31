@@ -3,22 +3,38 @@
 - name: 'Ansible for Ubuntu configuration'
   hosts: all
   become_method: sudo
-  become_user: '{{ local_user }}'
+  become_user: '{{ local_user_name | mandatory }}'
   become: yes
 
   roles:
-    - role: common
-      when: (common_apps is defined) or (group_apps is defined)
+    # - role: setuser
+    #   vars:
+    #     v_user:
+    #       name: '{{ local_user_name }}'
+    #       groups: sudo
 
-    - role: git
+    # - role: common
+    #   when: (common_apps is defined) or (group_apps is defined)
 
-    - role: python
+    # - role: firewall
 
-    - role: vim
+    # - role: git
 
-    - role: keyboard
-      when: kbd_profiles is defined
+    # - role: python
 
-    - role: dconf
+    # - role: vim
 
-    - role: vscode
+    # - role: keyboard
+    #   when: kbd_profiles is defined
+
+    # - role: dconf
+
+    # - role: ruby_bundler
+
+    # - role: nodejs
+    #   vars:
+    #     nodejs_version: 16
+
+    # - role: vscode
+
+    # - role: teams
