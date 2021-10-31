@@ -4,4 +4,6 @@
 /inventories/*
 !/inventories/example/
 
+/.vscode/
+
 *.code-workspace
