@@ -1,0 +1,49 @@
+---
+
+# Variables:
+# - v_user.name
+# - v_user.group is user's primary group.
+# - v_user.groups, when not defined, OS defaults are used.
+#       "List of groups user will be added to. When set to an empty string '', the user is removed from all groups except the primary group."
+# - v_user.shell is user's shell. When not defined, OS defaults are used.
+# - v_user.sshkey: the SSH public key(s), as a string or url (example: https://github.com/username.keys).
+# - v_user.sshkey_exclusive: read the docs for 'authorized_key_module' for more information.
+#       "Whether to remove all other non-specified keys from the authorized_keys file."
+#       Leave it undefined if not needed.
+# - v_user.sshkey_options: read the docs for 'authorized_key_module' for more information.
+#       "A string of ssh key options to be prepended to the key in the authorized_keys file."
+#       Leave it undefined if not needed.
+#
+# Links:
+# - https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html
+# - https://docs.ansible.com/ansible/latest/collections/ansible/posix/authorized_key_module.html
+
+- name: Add a user
+  become_user: root
+  ansible.builtin.user:
+    name: "{{ v_user.name }}"
+    group: "{{ v_user.group | default(omit) }}"
+    shell: "{{ v_user.shell | default(omit) }}"
+    state: present
+  when: v_user.name is defined
+
+- name: Check group membership
+  become_user: root
+  ansible.builtin.user:
+    name: "{{ v_user.name }}"
+    groups: "{{ v_user.groups }}"
+    append: yes
+  when:
+    - v_user.name is defined
+    - v_user.groups is defined
+
+- name: Add a SSH authorized key
+  ansible.posix.authorized_key:
+    user: "{{ v_user.name }}"
+    state: present
+    key: "{{ v_user.sshkey }}"
+    exclusive: "{{ v_user.sshkey_exclusive | default(omit) }}"
+    key_options: "{{ v_user.sshkey_options | default(omit) }}"
+  when:
+    - v_user.name is defined
+    - v_user.sshkey is defined
