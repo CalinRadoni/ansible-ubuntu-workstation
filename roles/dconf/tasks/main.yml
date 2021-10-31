@@ -1,4 +1,12 @@
 ---
+
+# This role sets:
+# - the GTK theme
+# - the Dock's auto-hide option
+# - Win+T as a shortcut for terminal
+# - Win+E as a shortcut for homefolder
+# - the list of favorite apps in the Dock
+
 - name: Set the GTK theme
   community.general.dconf:
     key: "/org/gnome/desktop/interface/gtk-theme"
@@ -16,13 +24,13 @@
 - name: Set the shortcut for terminal
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/home"
-    value: "['<Super>e']"
+    value: "['<Super>t']"
     state: present
 
 - name: Set the shortcut for home folder
   community.general.dconf:
     key: "/org/gnome/settings-daemon/plugins/media-keys/terminal"
-    value: "['<Super>t']"
+    value: "['<Super>e']"
     state: present
 
 - name: Format the list of favorite apps
