@@ -7,7 +7,7 @@ The defined roles are:
 - `dconf`, see it's source for description of functionality
 - `firewall` installs `nftables` and `firewalld`
 - `git` installs `git` and sets it's global settings from the `git_global_options` variable
-- `keyboard` adds custom keyboard profiles. It contains keyboard profiles for converting *standard* laptop keyboard to a **Tenkeyless** one, basically converting the numberpad to navigation keys.
+- `keyboard` adds custom keyboard profiles / layouts. It contains keyboard layouts for converting a laptop keyboard to a **Tenkeyless**-like one, using the numberpad as navigation keys. See [this](https://calinradoni.github.io/pages/211101-laptoptenkeyless.html) post for details.
 - `nodejs` installs `Node.js` from `nodesource.com` repository
 - `python` installs `python3-pip` and `python3-venv`
 - `ruby` installs `ruby-full` and `ruby-bundler`
