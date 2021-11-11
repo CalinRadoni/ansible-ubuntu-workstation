@@ -9,7 +9,11 @@ common_apps:
 git_global_options:
   user.name: 'Calin Radoni'
   user.email: 'CalinRadoni@users.noreply.github.com'
-  core.editor: vim
+  core.editor: 'vim --nofork'
+  diff.tool: vscode
+  difftool.vscode.cmd: 'code --wait --diff $LOCAL $REMOTE'
+  merge.tool: vscode
+  mergetool.vscode.cmd: 'code --wait $MERGED'
   init.defaultBranch: main
 
 dconf_GTK_theme: 'Yaru-dark'
