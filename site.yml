@@ -38,3 +38,7 @@
     # - role: vscode
 
     # - role: teams
+
+    # - role: kicad
+    #   vars:
+    #     kicad_version: 5.1

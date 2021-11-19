@@ -1,0 +1,19 @@
+---
+
+- name: Add the repository
+  become_user: root
+  ansible.builtin.apt_repository:
+    repo: "ppa:kicad/kicad-{{ kicad_version }}-releases"
+    state: present
+    update_cache: yes
+
+- name: Install KiCad
+  become_user: root
+  ansible.builtin.apt:
+    name:
+      - kicad
+      - kicad-symbols
+      - kicad-footprints
+      - kicad-templates
+      - kicad-packages3d
+    state: present
