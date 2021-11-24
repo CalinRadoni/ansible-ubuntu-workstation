@@ -1,0 +1,7 @@
+---
+
+- name: Restart freshclam
+  become_user: root
+  ansible.builtin.service:
+    name: clamav-freshclam.service
+    state: restarted

@@ -1,0 +1,25 @@
+---
+
+- name: Install clamav
+  become_user: root
+  ansible.builtin.apt:
+    name:
+      - clamav
+      - clamav-freshclam
+    state: present
+
+- name: freshclam should be enabled and running
+  become_user: root
+  ansible.builtin.service:
+    name: clamav-freshclam.service
+    enabled: yes
+    state: started
+
+- name: Number of checks per day
+  become_user: root
+  ansible.builtin.lineinfile:
+    dest: /etc/clamav/freshclam.conf
+    regexp: "^Checks "
+    line: "Checks {{ freshclam_checks }}"
+  notify:
+    - Restart freshclam
