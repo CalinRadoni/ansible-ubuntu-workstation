@@ -18,6 +18,10 @@
 
     # - role: firewall
 
+    # - role: clamav
+    #   vars:
+    #     freshclam_checks: 2
+
     # - role: git
 
     # - role: python
@@ -29,13 +33,15 @@
 
     # - role: dconf
 
+    # - role: podman
+
     # - role: ruby_bundler
 
     # - role: nodejs
     #   vars:
     #     nodejs_version: 16
 
-    # - role: vscode
+    - role: vscode
 
     # - role: teams
 

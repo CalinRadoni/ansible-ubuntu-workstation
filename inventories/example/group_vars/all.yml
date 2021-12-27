@@ -37,3 +37,10 @@ vscode_extensions:
   - editorconfig.editorconfig
   - vscode-org-mode.org-mode
   - gruntfuggly.todo-tree
+
+vscode_settings:
+  "debug.console.fontSize": 14
+  "editor.bracketPairColorization.enabled": true
+  "editor.cursorBlinking": "phase"
+  "editor.cursorSmoothCaretAnimation": true
+

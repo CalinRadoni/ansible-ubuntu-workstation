@@ -1,0 +1,40 @@
+---
+
+- name: Get user's home directory
+  ansible.builtin.user:
+    name: "{{ local_user_name }}"
+    state: present
+  register: local_user_registered
+
+- name: Create the directory for settings
+  ansible.builtin.file:
+    path: "{{ local_user_registered.home }}/.config/Code/User"
+    state: directory
+    mode: 'u=rwx,g=rx,o='
+
+- name: Create the settings file if it does not exists
+  ansible.builtin.copy:
+    content: "{}"
+    dest: "{{ local_user_registered.home }}/.config/Code/User/settings.json"
+    force: no
+    mode: 'u=rw,g=r,o='
+
+- name: Read the file content
+  ansible.builtin.slurp:
+    src: "{{ local_user_registered.home }}/.config/Code/User/settings.json"
+  register: imported_vscode_settings
+
+- name: Convert the settings to json
+  ansible.builtin.set_fact:
+    imported_vscode_settings: "{{ imported_vscode_settings.content | b64decode | from_json | default([]) }}"
+
+- name: Check the settings
+  ansible.builtin.include_tasks: check_var.yml
+  loop: "{{ vscode_settings | dict2items }}"
+
+- name: Write the file
+  ansible.builtin.copy:
+    content: "{{ imported_vscode_settings | to_nice_json }}"
+    dest: "{{ local_user_registered.home }}/.config/Code/User/settings.json"
+    mode: 'u=rw,g=r,o='
+    backup: yes

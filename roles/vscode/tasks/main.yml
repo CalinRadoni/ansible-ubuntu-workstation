@@ -26,3 +26,7 @@
     name: '{{ item }}'
   loop: '{{ vscode_extensions }}'
   when: vscode_extensions is defined
+
+- name: Update the settings file
+  ansible.builtin.include_tasks: update_settings.yml
+  when: vscode_settings is defined
