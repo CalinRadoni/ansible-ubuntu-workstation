@@ -4,17 +4,20 @@ This repository contains some roles meant to be used after a basic Ubuntu instal
 The defined roles are:
 
 - `common` install the apps defined in `common_apps` and `group_apps` variables
+- `clamav` installs clamav and freshclam then sets the number of checks per day
 - `dconf`, see it's source for description of functionality
 - `firewall` installs `nftables` and `firewalld`
 - `git` installs `git` and sets it's global settings from the `git_global_options` variable
 - `keyboard` adds custom keyboard profiles / layouts. It contains keyboard layouts for converting a laptop keyboard to a **Tenkeyless**-like one, using the numberpad as navigation keys. See [this](https://calinradoni.github.io/pages/211101-laptoptenkeyless.html) post for details.
+- `kicad` installs a `KiCad` version from it's ppa
 - `nodejs` installs `Node.js` from `nodesource.com` repository
-- `python` installs `python3-pip` and `python3-venv`
-- `ruby` installs `ruby-full` and `ruby-bundler`
+- `podman` installs `podman`, `buildah`, `slirp4netns` and `fuse-overlayfs`. In Ubuntu 20.04 uses the [Kubic project](https://build.opensuse.org/package/show/devel:kubic:libcontainers:stable/podman) provided packages. For other distributions uses the default repositories.
+- `python` installs `python3`, `python3-pip` and `python3-venv`
+- `ruby_bundler` installs `ruby-full` and `ruby-bundler`
 - `setuser` sets basic user properties, see it's source for description of functionality
 - `teams` installs `Teams` from Microsoft's repository
 - `vim` installs `vim` and sets `/etc/vim/vimrc.local`
-- `vscode` installs `Visual Studio Code` from Microsoft's repository
+- `vscode` installs `Visual Studio Code` from Microsoft's repository, extensions and custom user settings. For extensions I have built an Ansible module.
 
 This is a *work-in-progress* and should be tested before use.
 
@@ -40,7 +43,7 @@ Inside the `inventories/production` directory copy the content of the `inventori
 
 The default configuration files are `inventories/production/all.yml`, where you should put the common settings, and `inventories/production/desktops.yml` and `inventories/production/laptops.yml` for specific ones.
 
-**Modify** the files for your environment, mostly:
+**Modify !** the files for your environment, mostly:
 
 - `local_user_name` should be the name of your standard user;
 - set the content of `git_global_options` as needed;
