@@ -1,0 +1,11 @@
+---
+
+- name: Install using the 'package' module
+  become_user: root
+  ansible.builtin.package:
+    name:
+      - podman
+      - buildah
+      - slirp4netns
+      - fuse-overlayfs
+    state: present

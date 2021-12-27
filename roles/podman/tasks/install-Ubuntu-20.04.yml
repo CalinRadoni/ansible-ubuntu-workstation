@@ -1,0 +1,27 @@
+---
+
+- name: Add the signing key
+  become_user: root
+  ansible.builtin.apt_key:
+    url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key
+    keyring: /etc/apt/trusted.gpg.d/kubic.podman.release.gpg
+    state: present
+
+- name: Add the repository
+  become_user: root
+  ansible.builtin.apt_repository:
+    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/kubic.podman.release.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /"
+    filename: "podman"
+    state: present
+    update_cache: yes
+
+- name: Install Podman and packages from kubic repository
+  become_user: root
+  ansible.builtin.package:
+    name:
+      - podman
+      - buildah
+      - slirp4netns
+      - fuse-overlayfs
+    state: present
+
