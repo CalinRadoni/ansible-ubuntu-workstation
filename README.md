@@ -25,6 +25,7 @@ On the control host (the local host if the roles will be launched from this host
 ```sh
 sudo apt update
 sudo apt install software-properties-common
+sudo apt install python3 python3-pip python3-venv python3-jmespath
 sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible
 
