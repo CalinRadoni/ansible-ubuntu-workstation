@@ -8,6 +8,7 @@ The defined roles are:
 - `dconf`, see it's source for description of functionality
 - `firewall` installs `nftables` and `firewalld`
 - `git` installs `git` and sets it's global settings from the `git_global_options` variable
+- `hydra` installs THC Hydra
 - `keyboard` adds custom keyboard profiles / layouts. It contains keyboard layouts for converting a laptop keyboard to a **Tenkeyless**-like one, using the numberpad as navigation keys. See [this](https://calinradoni.github.io/pages/211101-laptoptenkeyless.html) post for details.
 - `kicad` installs a `KiCad` version from it's ppa
 - `nodejs` installs `Node.js` from `nodesource.com` repository
@@ -18,6 +19,8 @@ The defined roles are:
 - `teams` installs `Teams` from Microsoft's repository
 - `vim` installs `vim` and sets `/etc/vim/vimrc.local`
 - `vscode` installs `Visual Studio Code` from Microsoft's repository, extensions and custom user settings. For extensions I have built an Ansible module.
+- `wordlists` downloads wordlists into user's `~/wordlists` directory. For now only downloading from [SkullSecurity.org](https://wiki.skullsecurity.org/index.php/Passwords) and [KaliLists/dirbuster](https://github.com/3ndG4me/KaliLists/tree/master/dirbuster) is implemented.
+- `zaproxy` installs OWASP ZAP using the official [ZAP Linux Repos](https://software.opensuse.org/download.html?project=home%3Acabelo&package=owasp-zap)
 
 This is a *work-in-progress* and should be tested before use.
 

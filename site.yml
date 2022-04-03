@@ -41,10 +41,29 @@
     #   vars:
     #     nodejs_version: 16
 
-    - role: vscode
+    # - role: vscode
 
     # - role: teams
 
     # - role: kicad
     #   vars:
     #     kicad_version: 5.1
+
+    # - role: hydra
+
+    - role: wordlists
+      vars:
+        SkullSecurity:
+          - john.txt
+          - cain.txt
+          - 500-worst-passwords.txt
+          - rockyou.txt
+        dirbuster:
+          - directories.jbrofuzz
+          - apache-user-enum-1.0.txt
+          - apache-user-enum-2.0.txt
+          - directory-list-1.0.txt
+          - directory-list-2.3-small.txt
+          - directory-list-2.3-medium.txt
+
+    # - role: zaproxy
