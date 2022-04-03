@@ -1,0 +1,8 @@
+---
+
+- name: Install hydra
+  become_user: root
+  ansible.builtin.package:
+    name:
+      - hydra
+    state: present
