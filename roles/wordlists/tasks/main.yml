@@ -1,0 +1,56 @@
+---
+
+- name: Get user's home directory
+  ansible.builtin.user:
+    name: "{{ local_user_name }}"
+    state: present
+  register: local_user_registered
+
+- name: Create the wordlists directory
+  ansible.builtin.file:
+    path: "{{ local_user_registered.home }}/wordlists"
+    state: directory
+    mode: 'u=rwx,g=rx,o='
+
+- name: Create the dirbuster wordlists directory
+  ansible.builtin.file:
+    path: "{{ local_user_registered.home }}/wordlists/dirbuster"
+    state: directory
+    mode: 'u=rwx,g=rx,o='
+  when: dirbuster is defined
+
+- name: Install bzip2
+  become_user: root
+  ansible.builtin.package:
+    name:
+      - hydra
+    state: present
+  when: SkullSecurity is defined
+
+- name: Create temporary directory
+  ansible.builtin.tempfile:
+    state: directory
+  register: temp_dl_dir
+  when: SkullSecurity is defined
+  changed_when: false
+
+- name: Add wordlists from Skull Security
+  ansible.builtin.include_tasks: add_wordlist_ss.yml
+  loop: '{{ SkullSecurity }}'
+  loop_control:
+    loop_var: wordlist_name
+  when: SkullSecurity is defined
+
+- name: Remove temporary directory
+  ansible.builtin.file:
+    path: "{{ temp_dl_dir.path }}"
+    state: absent
+  when: temp_dl_dir.path is defined
+  changed_when: false
+
+- name: Add dirbuster wordlists
+  ansible.builtin.include_tasks: add_wordlist_db.yml
+  loop: '{{ dirbuster }}'
+  loop_control:
+    loop_var: wordlist_name
+  when: dirbuster is defined

@@ -1,0 +1,12 @@
+---
+
+- name: Check {{ wordlist_name }} file exists
+  ansible.builtin.stat:
+    path: "{{ local_user_registered.home }}/wordlists/dirbuster/{{ wordlist_name }}"
+  register: wordlist_status
+
+- name: Download "{{ wordlist_name }}"
+  ansible.builtin.get_url:
+    url: "https://github.com/3ndG4me/KaliLists/raw/master/dirbuster/{{ wordlist_name }}"
+    dest: "{{ local_user_registered.home }}/wordlists/dirbuster"
+  when: not wordlist_status.stat.exists

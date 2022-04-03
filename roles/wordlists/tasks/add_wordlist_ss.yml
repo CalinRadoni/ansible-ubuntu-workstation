@@ -1,0 +1,17 @@
+---
+
+- name: Check {{ wordlist_name }} file exists
+  ansible.builtin.stat:
+    path: "{{ local_user_registered.home }}/wordlists/{{ wordlist_name }}"
+  register: wordlist_status
+
+- name: Download "{{ wordlist_name }}.bz2"
+  ansible.builtin.get_url:
+    url: "http://downloads.skullsecurity.org/passwords/{{ wordlist_name }}.bz2"
+    dest: "{{ temp_dl_dir.path }}"
+  when: not wordlist_status.stat.exists
+
+- name: Extract "{{ wordlist_name }}"
+  ansible.builtin.shell:
+    cmd: bzip2 --stdout --decompress "{{ temp_dl_dir.path }}/{{ wordlist_name }}.bz2" > "{{ local_user_registered.home }}/wordlists/{{ wordlist_name }}"
+  when: not wordlist_status.stat.exists
