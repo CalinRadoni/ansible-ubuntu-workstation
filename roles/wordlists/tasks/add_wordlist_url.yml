@@ -1,0 +1,12 @@
+---
+
+- name: Check {{ wordlist_URL | urlsplit('path') | basename }} file exists
+  ansible.builtin.stat:
+    path: "{{ local_user_registered.home }}/wordlists/{{ wordlist_URL | urlsplit('path') | basename }}"
+  register: wordlist_status
+
+- name: Download "{{ wordlist_URL | urlsplit('path') | basename }}"
+  ansible.builtin.get_url:
+    url: "{{ wordlist_URL }}"
+    dest: "{{ local_user_registered.home }}/wordlists/{{ wordlist_URL | urlsplit('path') | basename }}"
+  when: not wordlist_status.stat.exists

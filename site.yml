@@ -53,17 +53,21 @@
 
     - role: wordlists
       vars:
-        SkullSecurity:
-          - john.txt
-          - cain.txt
-          - 500-worst-passwords.txt
-          - rockyou.txt
-        dirbuster:
-          - directories.jbrofuzz
-          - apache-user-enum-1.0.txt
-          - apache-user-enum-2.0.txt
-          - directory-list-1.0.txt
-          - directory-list-2.3-small.txt
-          - directory-list-2.3-medium.txt
+        # SkullSecurity:
+        #   - john.txt
+        #   - cain.txt
+        #   - 500-worst-passwords.txt
+        #   - rockyou.txt
+        #   - english.txt
+        # dirbuster:
+        #   - directories.jbrofuzz
+        #   - apache-user-enum-1.0.txt
+        #   - apache-user-enum-2.0.txt
+        #   - directory-list-1.0.txt
+        #   - directory-list-2.3-small.txt
+        #   - directory-list-2.3-medium.txt
+        wordlistURL:
+          - https://github.com/danielmiessler/SecLists/raw/master/Passwords/cirt-default-passwords.txt
+          - https://github.com/danielmiessler/SecLists/raw/master/Passwords/WiFi-WPA/probable-v2-wpa-top4800.txt
 
     # - role: zaproxy

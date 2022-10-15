@@ -23,7 +23,7 @@
   become_user: root
   ansible.builtin.package:
     name:
-      - hydra
+      - bzip2
     state: present
   when: SkullSecurity is defined
 
@@ -40,6 +40,13 @@
   loop_control:
     loop_var: wordlist_name
   when: SkullSecurity is defined
+
+- name: Add wordlist by URL
+  ansible.builtin.include_tasks: add_wordlist_url.yml
+  loop: '{{ wordlistURL }}'
+  loop_control:
+    loop_var: wordlist_URL
+  when: wordlistURL is defined
 
 - name: Remove temporary directory
   ansible.builtin.file:

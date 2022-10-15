@@ -19,7 +19,7 @@ The defined roles are:
 - `teams` installs `Teams` from Microsoft's repository
 - `vim` installs `vim` and sets `/etc/vim/vimrc.local`
 - `vscode` installs `Visual Studio Code` from Microsoft's repository, extensions and custom user settings. For extensions I have built an Ansible module.
-- `wordlists` downloads wordlists into user's `~/wordlists` directory. For now only downloading from [SkullSecurity.org](https://wiki.skullsecurity.org/index.php/Passwords) and [KaliLists/dirbuster](https://github.com/3ndG4me/KaliLists/tree/master/dirbuster) is implemented.
+- `wordlists` downloads wordlists into user's `~/wordlists` directory. Downloading is implemented from [SkullSecurity.org](https://wiki.skullsecurity.org/index.php/Passwords), [KaliLists/dirbuster](https://github.com/3ndG4me/KaliLists/tree/master/dirbuster) and from any complete URL.
 - `zaproxy` installs OWASP ZAP using the official [ZAP Linux Repos](https://software.opensuse.org/download.html?project=home%3Acabelo&package=owasp-zap)
 
 This is a *work-in-progress* and should be tested before use.
