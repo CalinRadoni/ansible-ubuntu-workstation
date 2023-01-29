@@ -36,9 +36,11 @@ sudo add-apt-repository --yes --update ppa:ansible/ansible
 sudo apt install ansible
 
 # install the requirements with
-ansible-galaxy collection install -r requirements.yml
-# upgrade the requirements with
-#ansible-galaxy collection install <collection_name> --upgrade
+[[ -r requirements.yml ]] && ansible-galaxy collection install -r requirements.yml
+# to upgrade all collections from a 'requirements.yml' file use:
+# [[ -r requirements.yml ]] && ansible-galaxy collection install --upgrade -r requirements.yml
+# or, to upgrade a single collection, use:
+# ansible-galaxy collection install --upgrade <collection_name>
 ```
 
 In the root directory of the repository create the `inventories/production` directory.
