@@ -23,6 +23,10 @@ The defined roles are:
 
 This is a *work-in-progress* and should be tested before use.
 
+## About Ansible
+
+You may start by reading [Ansible notes and quick start](https://calinradoni.github.io/pages/230129-ansible-notes-qs.html)
+
 ## Usage
 
 On the control host (the local host if the roles will be launched from this host) run:
@@ -41,6 +45,8 @@ sudo apt install ansible
 # or, to upgrade a single collection, use:
 # ansible-galaxy collection install --upgrade <collection_name>
 ```
+
+### With inventory file(s)
 
 In the root directory of the repository create the `inventories/production` directory.
 Inside the `inventories/production` directory copy the content of the `inventories/example` directory.
@@ -61,6 +67,30 @@ ansible-playbook --ask-become-pass -i inventories/production --limit laptop_loca
 
 # if configuring a desktop
 ansible-playbook --ask-become-pass -i inventories/production --limit desktop_local site.yml
+```
+
+### Without inventory file
+
+All needed variables must be passed on the command line.
+Read [Defining variables at runtime](https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_variables.html#id37) for more information.
+
+**Warning**: Some roles will not work if their variables are not set.
+
+Here are some simple examples:
+
+```sh
+# run the playbook against localhost
+ansible-playbook -i 127.0.0.1, \
+    --become --ask-become-pass \
+    -e 'ansible_connection=local' \
+    -e 'local_user_name=your_user_name' \
+    site.yml
+
+# run the playbook against the remote host 192.168.5.123
+ansible-playbook -i 192.168.5.123, \
+    --become --ask-become-pass \
+    -e 'local_user_name=your_user_name' \
+    site.yml
 ```
 
 ## Development
