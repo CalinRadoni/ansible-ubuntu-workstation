@@ -16,7 +16,6 @@ The defined roles are:
 - `python` installs `python3`, `python3-pip` and `python3-venv`
 - `ruby_bundler` installs `ruby-full` and `ruby-bundler`
 - `setuser` sets basic user properties, see it's source for description of functionality
-- `teams` installs `Teams` from Microsoft's repository
 - `vim` installs `vim` and sets `/etc/vim/vimrc.local`
 - `vscode` installs `Visual Studio Code` from Microsoft's repository, extensions and custom user settings. For extensions I have built an Ansible module.
 - `wordlists` downloads wordlists into user's `~/wordlists` directory. Downloading is implemented from [SkullSecurity.org](https://wiki.skullsecurity.org/index.php/Passwords), [KaliLists/dirbuster](https://github.com/3ndG4me/KaliLists/tree/master/dirbuster) and from any complete URL.
