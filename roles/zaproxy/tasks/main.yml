@@ -1,6 +1,7 @@
 ---
 
 - name: Add the signing key
+  become: true
   become_user: root
   ansible.builtin.apt_key:
     url: https://download.opensuse.org/repositories/home:cabelo/xUbuntu_20.04/Release.key
@@ -8,6 +9,7 @@
     state: present
 
 - name: Add the repository
+  become: true
   become_user: root
   ansible.builtin.apt_repository:
     repo: 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/home_cabelo.gpg] http://download.opensuse.org/repositories/home:/cabelo/xUbuntu_20.04/ /'
@@ -16,6 +18,7 @@
     update_cache: yes
 
 - name: Install OWASP ZAP
+  become: true
   become_user: root
   ansible.builtin.apt:
     name: owasp-zap

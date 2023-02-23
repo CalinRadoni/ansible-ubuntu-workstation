@@ -1,6 +1,24 @@
 ---
 
+- name: Verify x_user variable
+  ansible.builtin.assert:
+    that:
+      - x_user is defined
+      - x_user | type_debug == 'dict'
+    fail_msg: "x_user dictionary must be defined !"
+    quiet: true
+
+- name: Verify required string variables
+  ansible.builtin.assert:
+    that:
+      - x_user['name'] is defined
+      - x_user['name'] != None
+      - x_user['name'] | length > 0
+    fail_msg: "x_user['name'] must be set !"
+    quiet: true
+
 - name: Add the signing key
+  become: yes
   become_user: root
   ansible.builtin.apt_key:
     url: https://packages.microsoft.com/keys/microsoft.asc
@@ -8,6 +26,7 @@
     state: present
 
 - name: Add the repository
+  become: yes
   become_user: root
   ansible.builtin.apt_repository:
     repo: 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main'
@@ -16,17 +35,23 @@
     update_cache: yes
 
 - name: Install VSCode
+  become: yes
   become_user: root
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: code
     state: present
 
 - name: Install the extensions
+  become: yes
+  become_user: "{{ x_user['name'] }}"
   vscode_extension_installer:
     name: '{{ item }}'
-  loop: '{{ vscode_extensions }}'
-  when: vscode_extensions is defined
+  loop: "{{ x_user['vscode_extensions'] }}"
+  when: x_user['vscode_extensions'] is defined
 
-- name: Update the settings file
-  ansible.builtin.include_tasks: update_settings.yml
-  when: vscode_settings is defined
+# - name: Update the settings file
+#   become: yes
+#   become_user: "{{ x_user['name'] }}"
+#   ansible.builtin.include_tasks: update_settings.yml
+#   when: x_user['vscode_settings'] is defined
+  

@@ -7,3 +7,8 @@
 /.vscode/
 
 *.code-workspace
+
+# do not publish notes and test files
+/notes/
+/test*
+/playbooks/test*

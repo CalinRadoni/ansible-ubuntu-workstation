@@ -1,13 +1,15 @@
 ---
 
-- name: Add the signing key
+- name: Add the signing key for Kubic repository
+  become: true
   become_user: root
   ansible.builtin.apt_key:
     url: https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/Release.key
     keyring: /etc/apt/trusted.gpg.d/kubic.podman.release.gpg
     state: present
 
-- name: Add the repository
+- name: Add the Kubic repository
+  become: true
   become_user: root
   ansible.builtin.apt_repository:
     repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/kubic.podman.release.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /"
@@ -15,9 +17,10 @@
     state: present
     update_cache: yes
 
-- name: Install Podman and packages from kubic repository
+- name: Install Podman and packages from Kubic repository
+  become: true
   become_user: root
-  ansible.builtin.package:
+  ansible.builtin.apt:
     name:
       - podman
       - buildah

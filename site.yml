@@ -2,51 +2,14 @@
 
 - name: 'Ansible for Ubuntu configuration'
   hosts: all
-  become_method: sudo
-  become: yes
+
+  tasks:
+
+  - name: Warning !
+    ansible.builtin.debug:
+      msg: "This is for reference, laptop-jammy is the good one."
 
   roles:
-    # - role: setuser
-    #   vars:
-    #     v_user:
-    #       name: '{{ local_user_name | mandatory }}'
-    #       groups: sudo
-
-    # - role: common
-    #   when: (common_apps is defined) or (group_apps is defined)
-
-    # - role: firewall
-
-    # - role: clamav
-    #   vars:
-    #     freshclam_checks: 2
-
-    # - role: git
-
-    # - role: python
-
-    # - role: vim
-
-    # - role: keyboard
-    #   when: kbd_profiles is defined
-
-    # - role: dconf
-
-    # - role: podman
-
-    # - role: ruby_bundler
-
-    # - role: nodejs
-    #   vars:
-    #     nodejs_version: 16
-
-    # - role: vscode
-
-    # - role: kicad
-    #   vars:
-    #     kicad_version: 5.1
-
-    # - role: hydra
 
     # - role: wordlists
     #   vars:
@@ -66,5 +29,3 @@
     #     wordlistURL:
     #       - https://github.com/danielmiessler/SecLists/raw/master/Passwords/cirt-default-passwords.txt
     #       - https://github.com/danielmiessler/SecLists/raw/master/Passwords/WiFi-WPA/probable-v2-wpa-top4800.txt
-
-    # - role: zaproxy

@@ -1,6 +1,7 @@
 ---
 
 - name: Install hydra
+  become: true
   become_user: root
   ansible.builtin.package:
     name:

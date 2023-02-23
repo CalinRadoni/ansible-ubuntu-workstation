@@ -1,0 +1,54 @@
+---
+
+#
+# Tags:
+# - install
+# - user_config
+# - system_config
+#
+# ansible-playbook --ask-become-pass -i inventories/production/laptop.yml laptop-jammy.yml
+# ansible-playbook --ask-become-pass -i inventories/production/laptop.yml --skip-tags user_config laptop-jammy.yml
+# ansible-playbook --ask-become-pass -i inventories/production/laptop.yml --skip-tags install laptop-jammy.yml
+#
+
+- name: 'Ansible for Ubuntu configuration'
+  hosts: all
+
+  vars:
+    simple_roles:
+      - common
+      - clamav
+      - podman
+      - python
+      - vim
+
+    x_roles:
+      - setuser
+      - keyboard
+      - git
+      - vscode
+      - dconf
+
+  tasks:
+
+    - name: Install roles
+      include_role:
+        name: "{{ simple_role }}"
+      loop_control:
+        loop_var: simple_role
+      loop: "{{ simple_roles }}"
+      tags: install
+
+    - name: Configure user
+      include_role:
+        name: "{{ x_role }}"
+      vars:
+        x_user: "{{ xur.0 }}"
+        x_role: "{{ xur.1 }}"
+      loop_control:
+        loop_var: xur
+      loop: "{{ users | product(x_roles) | list }}"
+      when:
+        - users is defined
+        - x_roles is defined
+      tags: user_config

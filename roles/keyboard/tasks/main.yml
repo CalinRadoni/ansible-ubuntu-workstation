@@ -1,49 +1,108 @@
 ---
-- name: Copy custom keyboard profiles
-  become_user: root
-  ansible.builtin.copy:
-    src: "{{ item }}"
-    dest: "/usr/share/X11/xkb/symbols/"
-    owner: root
-    group: root
-    mode: u=rw,g=r,o=r
-  loop: "{{ kbd_profiles.keys() | list }}"
-  notify:
-    - Reconfigure xkb-data
 
-- name: Add entries for language profiles
-  become_user: root
-  blockinfile:
-    path: /usr/share/X11/xkb/rules/evdev.xml
-    block: |
-      <layout>
-        <configItem>
-          <name>{{ item.key }}</name>
-          <shortDescription>{{ item.value.shortDescription }}</shortDescription>
-          <description>{{ item.value.description }}</description>
-          <languageList>
-            <iso639Id>{{ item.value.iso639Id }}</iso639Id>
-          </languageList>
-        </configItem>
-      </layout>
-    insertbefore: '</layoutList>'
-    marker: "<!-- {{ item.key }} {mark} ANSIBLE MANAGED BLOCK -->"
-    backup: yes
-  loop: "{{ kbd_profiles | dict2items }}"
-  notify:
-    - Reconfigure xkb-data
+# Requirements: community.general
+# Install the requirements with: `ansible-galaxy collection install community.general`
+#
+# Variables:
+#
+# - kbd_profiles dictionary containing dictionaries.
+#   Each dictionary with these fields:
+#   - shortDescription
+#   - description
+#   - iso639Id
+# - x_user dictionary with these fields:
+#   - name
 
-- name: Create the list of keyboard profiles
-  set_fact:
-    kbd_profiles_list: "{{ kbd_profiles_list | default([]) }} + [ \"('xkb', '{{ item }}')\" ]"
-  loop: "{{ kbd_profiles.keys() | list }}"
+- name: Verify x_user variable
+  ansible.builtin.assert:
+    that:
+      - x_user is defined
+      - x_user | type_debug == 'dict'
+    fail_msg: "x_user dictionary must be defined !"
+    quiet: true
 
-- name: Create a string from the list of the keyboard profiles
-  set_fact:
-    kbd_profiles_str: "[{{ kbd_profiles_list | join(\", \") | string }}]"
+- name: Verify required string variables
+  ansible.builtin.assert:
+    that:
+      - x_user['name'] is defined
+      - x_user['name'] != None
+      - x_user['name'] | type_debug == 'str'
+      - x_user['name'] | length > 0
+    fail_msg: "x_user['name'] must be set !"
+    quiet: true
 
-- name: Set input sources for Gnome desktop
-  community.general.dconf:
-    key: "/org/gnome/desktop/input-sources/sources"
-    value: "{{ kbd_profiles_str | string }}"
-    state: present
+- name: Set the keyboard layout(s)
+  when: kbd_profiles is defined
+  block:
+
+    - name: Check keyboard definitions
+      ansible.builtin.assert:
+        that:
+          - item.value.shortDescription is defined
+          - item.value.description is defined
+          - item.value.iso639Id is defined
+          - item.value.shortDescription != None
+          - item.value.description != None
+          - item.value.iso639Id != None
+          - item.value.shortDescription | length > 0
+          - item.value.description | length > 0
+          - item.value.iso639Id | length > 0
+        fail_msg: "Wrong keyboard definition"
+        quiet: true
+      loop: "{{ kbd_profiles | dict2items }}"
+
+    - name: Copy custom keyboard profiles
+      become: true
+      become_user: root
+      ansible.builtin.copy:
+        src: "{{ item }}"
+        dest: "/usr/share/X11/xkb/symbols/"
+        owner: root
+        group: root
+        mode: u=rw,g=r,o=r
+      loop: "{{ kbd_profiles.keys() | list }}"
+      notify:
+        - Reconfigure xkb-data
+
+    - name: Add entries for language profiles
+      become: true
+      become_user: root
+      ansible.builtin.blockinfile:
+        path: /usr/share/X11/xkb/rules/evdev.xml
+        block: |
+          <layout>
+            <configItem>
+              <name>{{ item.key }}</name>
+              <shortDescription>{{ item.value.shortDescription }}</shortDescription>
+              <description>{{ item.value.description }}</description>
+              <languageList>
+                <iso639Id>{{ item.value.iso639Id }}</iso639Id>
+              </languageList>
+            </configItem>
+          </layout>
+        insertbefore: '</layoutList>'
+        marker: "<!-- {{ item.key }} {mark} ANSIBLE MANAGED BLOCK -->"
+        backup: yes
+      loop: "{{ kbd_profiles | dict2items }}"
+      notify:
+        - Reconfigure xkb-data
+
+    - name: Create the list of keyboard profiles
+      ansible.builtin.set_fact:
+        kbd_profiles_list: "{{ kbd_profiles.keys() | list | map('regex_replace', '(.+)', \"('xkb', '\\1')\") | list | join (', ') }}"
+
+    - name: Create the string of keyboard profiles
+      ansible.builtin.set_fact:
+        kbd_profiles_str: "{{ ('[' + kbd_profiles_list + ']') | string }}"
+
+    - name: Requested keyboard profiles
+      ansible.builtin.debug:
+        var: kbd_profiles_str
+
+    - name: Set input sources for Gnome desktop
+      become: true
+      become_user: "{{ x_user['name'] }}"
+      community.general.dconf:
+        key: "/org/gnome/desktop/input-sources/sources"
+        value: "{{ kbd_profiles_str }}"
+        state: present

@@ -1,24 +1,26 @@
 ---
 
-- name: APT update and autoremove
-  become_user: root
-  ansible.builtin.apt:
-    update_cache: yes
-    autoremove: yes
-  changed_when: False
+# Variables:
+#
+# - (optional) common_apps
+# - (optional) host_apps
+
+- name: Initialize the list of applications
+  ansible.builtin.set_fact:
+    application_list: "{{ common_apps | default([]) }}"
+
+- name: Add host's applications
+  ansible.builtin.set_fact:
+    application_list: "{{ application_list + host_apps }}"
+  when: host_apps is defined
 
 - name: Install common applications
+  become: true
   become_user: root
-  ansible.builtin.apt:
-    name: '{{ item }}'
+  ansible.builtin.package:
+    name: "{{ common_app }}"
     state: present
-  loop: '{{ common_apps }}'
-  when: common_apps is defined
-
-- name: Install common group applications
-  become_user: root
-  ansible.builtin.apt:
-    name: '{{ item }}'
-    state: present
-  loop: '{{ group_apps }}'
-  when: group_apps is defined
+  loop_control:
+    loop_var: common_app
+  loop: "{{ application_list }}"
+  when: application_list | length > 0

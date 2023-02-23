@@ -1,0 +1,9 @@
+---
+
+- name: Install podman from default Ubuntu repository
+  become: true
+  become_user: root
+  ansible.builtin.apt:
+    name: podman
+    state: present
+    install_recommends: true

@@ -1,6 +1,11 @@
 ---
 
+# Variables:
+#
+# - freshclam_checks, defaults to 24
+
 - name: Install clamav
+  become: true
   become_user: root
   ansible.builtin.apt:
     name:
@@ -8,14 +13,16 @@
       - clamav-freshclam
     state: present
 
-- name: freshclam should be enabled and running
+- name: The freshclam service should be enabled and running
+  become: true
   become_user: root
   ansible.builtin.service:
     name: clamav-freshclam.service
     enabled: yes
     state: started
 
-- name: Number of checks per day
+- name: Set freshclam's number of checks per day
+  become: true
   become_user: root
   ansible.builtin.lineinfile:
     dest: /etc/clamav/freshclam.conf

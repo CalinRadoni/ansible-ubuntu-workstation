@@ -1,12 +1,14 @@
 ---
 
 - name: Install vim
+  become: true
   become_user: root
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name: vim
     state: present
 
 - name: Copy vim configuration
+  become: true
   become_user: root
   ansible.builtin.copy:
     src: "vimrc.local"

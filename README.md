@@ -1,5 +1,13 @@
 # Ansible roles for Ubuntu laptop or desktop install
 
+**Note begin**: I am rebuilding this repository. What must be done:
+
+- `vscode` **settings** must be rebuilt
+- `wordlists` must be rebuilt
+- example inventory  must be rebuilt
+
+**Note end**.
+
 This repository contains some roles meant to be used after a basic Ubuntu installation.
 The defined roles are:
 
@@ -34,9 +42,9 @@ On the control host (the local host if the roles will be launched from this host
 ```sh
 sudo apt update
 sudo apt install software-properties-common
-sudo apt install python3 python3-pip python3-venv python3-jmespath
+sudo apt install python3 python3-pip python3-venv python3-jmespath python3-psutil
 sudo add-apt-repository --yes --update ppa:ansible/ansible
-sudo apt install ansible
+sudo apt install ansible ansible-lint
 
 # install the requirements with
 [[ -r requirements.yml ]] && ansible-galaxy collection install -r requirements.yml

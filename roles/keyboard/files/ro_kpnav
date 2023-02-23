@@ -1,4 +1,4 @@
-// Remaped keypad keys like navigation keys
+// Remapped keypad keys like navigation keys
 // Audio volume and Monitor brightness on KPSU and KPAD
 
 partial keypad_keys
@@ -25,4 +25,3 @@ xkb_symbols "ro_kpnav" {
     replace key <KPDL> { type= "ONE_LEVEL", symbols[Group1]=[  Shift_R ] };
     replace key <KPEN> { type= "ONE_LEVEL", symbols[Group1]=[ NoSymbol ] };
 };
-

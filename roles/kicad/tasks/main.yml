@@ -1,6 +1,10 @@
 ---
 
-- name: Add the repository
+# Variables:
+#   - kicad_version, default value '7.0'
+
+- name: Add the KiCad repository
+  become: true
   become_user: root
   ansible.builtin.apt_repository:
     repo: "ppa:kicad/kicad-{{ kicad_version }}-releases"
@@ -8,12 +12,9 @@
     update_cache: yes
 
 - name: Install KiCad
+  become: true
   become_user: root
   ansible.builtin.apt:
-    name:
-      - kicad
-      - kicad-symbols
-      - kicad-footprints
-      - kicad-templates
-      - kicad-packages3d
+    name: kicad
     state: present
+    install_recommends: true

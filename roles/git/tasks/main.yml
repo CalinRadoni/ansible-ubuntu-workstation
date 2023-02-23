@@ -1,16 +1,54 @@
 ---
 
+# Requirements: community.general
+# Install the requirements with: `ansible-galaxy collection install community.general`
+#
+# Variables:
+#
+# x_user dictionary with these fields:
+#   - name
+#   - git_options
+#   - (optional) group
+#   - (optional) shell
+#   - (optional) add_to_groups
+#   - (optional) sshkey
+#     - (optional) sshkey_exclusive
+#     - (optional) sshkey_options
+
+- name: Verify x_user variable
+  ansible.builtin.assert:
+    that:
+      - x_user is defined
+      - x_user | type_debug == 'dict'
+    fail_msg: "x_user dictionary must be defined !"
+    quiet: true
+
+- name: Verify required string variables
+  ansible.builtin.assert:
+    that:
+      - x_user['name'] is defined
+      - x_user['name'] != None
+      - x_user['name'] | length > 0
+    fail_msg: "x_user['name'] must be set !"
+    quiet: true
+
 - name: Install git
+  become: true
   become_user: root
-  ansible.builtin.apt:
+  ansible.builtin.package:
     name:
       - git
     state: present
 
 - name: Set global git options
+  become: true
+  become_user: "{{ x_user['name'] }}"
   community.general.git_config:
     scope: global
-    name: '{{ item.key }}'
-    value: '{{ item.value }}'
-  loop: "{{ git_global_options | dict2items }}"
-  when: git_global_options is defined
+    name: "{{ item.key }}"
+    value: "{{ item.value }}"
+  loop: "{{ x_user['git_options'] | dict2items }}"
+  when:
+    - x_user is defined
+    - x_user['name'] is defined
+    - x_user['git_options'] is defined
