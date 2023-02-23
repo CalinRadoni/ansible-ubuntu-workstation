@@ -1,0 +1,25 @@
+---
+# https://docs.flutter.dev/get-started/install/linux
+
+- name: Install Flutter dependencies
+  become: true
+  become_user: root
+  ansible.builtin.package:
+    name:
+      - snapd
+      - curl
+      - file
+      - git
+      - coreutils
+      - xz-utils
+      - zip
+      - unzip
+      - libglu1-mesa
+    state: present
+
+- name: Install Flutter using snapd
+  become: true
+  become_user: root
+  community.general.snap:
+    name: flutter
+    classic: yes
