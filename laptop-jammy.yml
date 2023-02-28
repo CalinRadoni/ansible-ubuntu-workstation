@@ -1,10 +1,17 @@
 ---
 
 #
+# Notes:
+#
+# For type tests see: https://docs.ansible.com/ansible/latest/playbook_guide/playbooks_tests.html#type-tests
+#
 # Tags:
+#
 # - install
 # - user_config
 # - system_config
+#
+# Example usage:
 #
 # ansible-playbook --ask-become-pass -i inventories/production/laptop.yml laptop-jammy.yml
 # ansible-playbook --ask-become-pass -i inventories/production/laptop.yml --skip-tags user_config laptop-jammy.yml
@@ -16,30 +23,34 @@
 
   vars:
     simple_roles:
-      - common
-      - clamav
-      - podman
-      - python
-      - vim
+      # - common
+      # - clamav
+      # - podman
+      # - python
+      # - vim
 
     x_roles:
-      - setuser
-      - keyboard
-      - git
-      - vscode
-      - dconf
+      # - setuser
+      # - keyboard
+      # - git
+      # - vscode
+      # - dconf
 
   tasks:
 
-    - name: Install roles
+    - name: System (user independent) roles
       include_role:
         name: "{{ simple_role }}"
       loop_control:
         loop_var: simple_role
-      loop: "{{ simple_roles }}"
+      loop: "{{ simple_roles if
+                  simple_roles is defined and simple_roles is iterable and
+                  simple_roles is not string and simple_roles is not mapping and
+                  simple_roles | length > 0
+                  else [] }}"
       tags: install
 
-    - name: Configure user
+    - name: User dependent roles
       include_role:
         name: "{{ x_role }}"
       vars:
@@ -47,8 +58,12 @@
         x_role: "{{ xur.1 }}"
       loop_control:
         loop_var: xur
-      loop: "{{ users | product(x_roles) | list }}"
-      when:
-        - users is defined
-        - x_roles is defined
+      loop: "{{ (users | product(x_roles) | list) if
+                users is defined and users is iterable and
+                users is not string and users is not mapping and
+                users | length > 0 and
+                x_roles is defined and x_roles is iterable and
+                x_roles is not string and x_roles is not mapping and
+                x_roles | length > 0
+                else [] }}"
       tags: user_config
