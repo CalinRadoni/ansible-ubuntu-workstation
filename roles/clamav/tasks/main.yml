@@ -2,7 +2,21 @@
 
 # Variables:
 #
-# - freshclam_checks, defaults to 24
+# - freshclam_checks, defaults to 24, restricted in this role to [1..48].
+
+- name: Check OS family
+  ansible.builtin.assert:
+    that: ansible_facts['os_family'] == 'Debian'
+    fail_msg: "This role is implemented only for Debian OS family !"
+    quiet: true
+
+- name: Check freshclam_checks variable
+  ansible.builtin.assert:
+    that:
+      - freshclam_checks is number and freshclam_checks is integer
+      - freshclam_checks > 0 and freshclam_checks < 49
+    fail_msg: "freshclam_checks must be an integer between 1 and 48 !"
+    quiet: true
 
 - name: Install clamav
   become: true
