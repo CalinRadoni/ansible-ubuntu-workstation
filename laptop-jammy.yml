@@ -28,7 +28,7 @@
       # - podman
       # - python
       # - vim
-      - teams_insiders
+      # - teams_insiders
 
     x_roles:
       # - setuser
