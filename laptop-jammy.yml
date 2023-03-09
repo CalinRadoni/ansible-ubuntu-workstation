@@ -31,6 +31,7 @@
       # - teams_insiders
 
     x_roles:
+      - debug_user_settings
       # - setuser
       # - keyboard
       # - git
@@ -51,6 +52,18 @@
                   else [] }}"
       tags: install
 
+    - name: Load user settings
+      ansible.builtin.include_tasks:
+        file: tasks/load_user_info.yml
+      loop_control:
+        loop_var: file_name
+      loop: "{{ userlist if
+                  userlist is defined and userlist is iterable and
+                  userlist is not string and userlist is not mapping and
+                  userlist | length > 0
+                  else [] }}"
+      tags: user_config
+
     - name: User dependent roles
       include_role:
         name: "{{ x_role }}"
@@ -59,10 +72,10 @@
         x_role: "{{ xur.1 }}"
       loop_control:
         loop_var: xur
-      loop: "{{ (users | product(x_roles) | list) if
-                users is defined and users is iterable and
-                users is not string and users is not mapping and
-                users | length > 0 and
+      loop: "{{ (user_settings | product(x_roles) | list) if
+                user_settings is defined and user_settings is iterable and
+                user_settings is not string and user_settings is not mapping and
+                user_settings | length > 0 and
                 x_roles is defined and x_roles is iterable and
                 x_roles is not string and x_roles is not mapping and
                 x_roles | length > 0
