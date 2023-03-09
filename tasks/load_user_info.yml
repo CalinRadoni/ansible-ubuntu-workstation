@@ -1,0 +1,24 @@
+---
+
+# Read settings from a file and add them to a list
+#
+# The data in the file should be a dictionary.
+#
+# Variables:
+#   - file_name IN
+#   - user_settings OUT
+
+- name: Load variables for a user from file
+  ansible.builtin.include_vars:
+    file: "{{ inventory_dir }}/users/{{ file_name }}.yml"
+    name: user_data
+  when: file_name is defined
+
+- name: Add the settings to a list
+  ansible.builtin.set_fact:
+    user_settings: "{{ user_settings | default([]) + [user_data] }}"
+  when:
+    - user_data is defined
+    - user_data is not string
+    - user_data is iterable
+    - user_data is mapping

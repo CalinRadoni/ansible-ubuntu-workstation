@@ -1,0 +1,42 @@
+---
+
+# Variables:
+#
+# x_user dictionary with these fields:
+#   - name
+#   - (optional) any other field
+
+- name: Verify x_user variable
+  ansible.builtin.assert:
+    that:
+      - x_user is defined
+      - x_user | type_debug == 'dict'
+    fail_msg: "'x_user' dictionary must be defined !"
+    quiet: true
+
+- name: Verify required string variables
+  ansible.builtin.assert:
+    that:
+      - x_user['name'] is defined
+      - x_user['name'] != None
+      - x_user['name'] | length > 0
+    fail_msg: "x_user['name'] must be set !"
+    quiet: true
+
+- name: Init the list
+  ansible.builtin.set_fact:
+    user_settings_msg: "{{ [] }}"
+
+- name: Build the list
+  ansible.builtin.set_fact:
+    user_settings_msg: "{{ user_settings_msg | default([]) +
+        [item.key + ((': ' + item.value) if
+          item.value is string
+          else (' defined as ' + item.value | type_debug))] }}"
+  loop_control:
+    label: "{{ item.key }}"
+  loop: "{{ x_user | dict2items }}"
+
+- name: Show the list
+  ansible.builtin.debug:
+    var: user_settings_msg
