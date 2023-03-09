@@ -52,6 +52,14 @@
     quiet: true
   when: x_user['shell'] is defined
 
+- name: Add primary group if needed
+  become: true
+  become_user: root
+  ansible.builtin.group:
+    name: "{{ x_user['group'] }}"
+    state: present
+  when: x_user['group'] is defined
+
 - name: Add / set the user
   become: true
   become_user: root
@@ -67,9 +75,8 @@
   ansible.builtin.user:
     name: "{{ x_user['name'] }}"
     groups: "{{ x_user['add_to_groups'] }}"
-    append: yes
-  when:
-    - x_user['add_to_groups'] is defined
+    append: true
+  when: x_user['add_to_groups'] is defined
 
 - name: Add a SSH authorized key
   become: true
@@ -80,5 +87,4 @@
     key: "{{ x_user['sshkey'] }}"
     exclusive: "{{ x_user['sshkey_exclusive'] | default(omit) }}"
     key_options: "{{ x_user['sshkey_options'] | default(omit) }}"
-  when:
-    - x_user['sshkey'] is defined
+  when: x_user['sshkey'] is defined
