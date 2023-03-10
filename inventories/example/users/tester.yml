@@ -1,0 +1,13 @@
+---
+
+name: 'tester'
+group: 'tester'
+shell: '/bin/bash'
+# use a comma separated list for 'add_to_groups'
+# add_to_groups: 'sudo'
+dconf:
+  GTK_theme: 'Yaru-blue-dark'
+  fixed_dock: false
+  media_keys:
+    "/org/gnome/settings-daemon/plugins/media-keys/home": "['<Super>e']"
+    "/org/gnome/settings-daemon/plugins/media-keys/terminal": "['<Super>t']"

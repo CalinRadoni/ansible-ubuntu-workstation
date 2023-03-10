@@ -8,9 +8,7 @@ kbd_profiles:
   ro_kpnav:
     shortDescription: ror
     description: 'Romanian with keypad as nav'
-    iso639Id: rum
+    iso639Id: ron
 
 group_apps:
-  - openconnect
-  - network-manager-openconnect
-  - network-manager-openconnect-gnome
+  - keepassxc

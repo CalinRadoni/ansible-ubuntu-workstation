@@ -5,7 +5,6 @@
 - the **settings** section from `vscode` role MUST be rebuilt
 - `vscode` role should be rebuilt to include the *profiles* feature
 - `wordlists` role MUST be rebuilt
-- the example inventory MUST be rebuilt
 
 **Note end**.
 

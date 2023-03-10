@@ -1,0 +1,26 @@
+---
+
+name: 'calin'
+group: 'calin'
+shell: '/bin/bash'
+add_to_groups: 'sudo,users'
+vscode_extensions:
+  - "ms-python.python"
+  - "redhat.ansible"
+  - "redhat.vscode-yaml"
+git_options:
+  user.name: 'Calin Radoni'
+  user.email: 'CalinRadoni@users.noreply.github.com'
+  core.editor: 'vim --nofork'
+  diff.tool: vscode
+  difftool.vscode.cmd: 'code --wait --diff $LOCAL $REMOTE'
+  merge.tool: vscode
+  mergetool.vscode.cmd: 'code --wait $MERGED'
+  init.defaultbranch: main
+dconf:
+  GTK_theme: 'Yaru-purple-dark'
+  fixed_dock: false
+  media_keys:
+    "/org/gnome/settings-daemon/plugins/media-keys/home": "['<Super>e']"
+    "/org/gnome/settings-daemon/plugins/media-keys/terminal": "['<Super>t']"
+  favorite_apps: ['firefox_firefox.desktop', 'org.gnome.Terminal.desktop', 'code.desktop']

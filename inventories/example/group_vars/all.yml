@@ -1,46 +1,7 @@
 ---
 
-local_user_name: calin
-
 common_apps:
   - apt-transport-https
-  - keepassxc
-
-git_global_options:
-  user.name: 'Calin Radoni'
-  user.email: 'CalinRadoni@users.noreply.github.com'
-  core.editor: 'vim --nofork'
-  diff.tool: vscode
-  difftool.vscode.cmd: 'code --wait --diff $LOCAL $REMOTE'
-  merge.tool: vscode
-  mergetool.vscode.cmd: 'code --wait $MERGED'
-  init.defaultBranch: main
-
-dconf_GTK_theme: 'Yaru-dark'
-dconf_fixed_dock: 'false'
-dconf_favorite_apps:
-  - firefox.desktop
-  - libreoffice-writer.desktop
-  - org.gnome.Nautilus.desktop
-  - org.gnome.Terminal.desktop
-  - code.desktop
-  - org.remmina.Remmina.desktop
-  - virt-manager.desktop
-  - org.keepassxc.KeePassXC.desktop
-  - appimagekit-joplin.desktop
-
-vscode_extensions:
-  - ms-vscode.cpptools
-  - ms-python.python
-  - redhat.ansible
-  - streetsidesoftware.code-spell-checker
-  - editorconfig.editorconfig
-  - vscode-org-mode.org-mode
-  - gruntfuggly.todo-tree
-
-vscode_settings:
-  "debug.console.fontSize": 14
-  "editor.bracketPairColorization.enabled": true
-  "editor.cursorBlinking": "phase"
-  "editor.cursorSmoothCaretAnimation": true
-
+  - nmap
+  - tcpdump
+  - screen
