@@ -11,7 +11,7 @@
 This repository contains some roles meant to be used after a basic Ubuntu installation.
 The defined roles are:
 
-- `common` install the apps defined in `common_apps` and `group_apps` variables
+- `common` install the apps defined in `common_apps`, `group_apps` and `host_apps` variables
 - `clamav` installs clamav and freshclam then sets the number of checks per day
 - `dconf`, see it's source for description of functionality
 - `firewall` installs `nftables` and `firewalld`

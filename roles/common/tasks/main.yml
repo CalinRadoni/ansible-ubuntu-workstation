@@ -3,11 +3,17 @@
 # Variables:
 #
 # - (optional) common_apps
+# - (optional) group_apps
 # - (optional) host_apps
 
 - name: Initialize the list of applications
   ansible.builtin.set_fact:
     application_list: "{{ common_apps | default([]) }}"
+
+- name: Add group's applications
+  ansible.builtin.set_fact:
+    application_list: "{{ application_list + group_apps }}"
+  when: group_apps is defined
 
 - name: Add host's applications
   ansible.builtin.set_fact:
