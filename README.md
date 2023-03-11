@@ -32,6 +32,26 @@ The defined roles are:
 
 This is a *work-in-progress* and should be tested before use.
 
+## Testing
+
+To test playbooks, roles and tasks I use physical and virtual hosts.
+
+Using `lxc`, a simple virtual system container can be created with:
+
+```sh
+lxc launch images:ubuntu/22.04 jammy-container
+lxc exec jammy-container -- passwd ubuntu
+lxc exec jammy-container -- apt update && apt install openssh-server
+lxc info jammy-container
+```
+
+and cleaned up with:
+
+```sh
+lxc stop jammy-container
+lxc delete jammy-container
+```
+
 ## About Ansible
 
 You may start by reading [Ansible notes and quick start](https://calinradoni.github.io/pages/230129-ansible-notes-qs.html)
