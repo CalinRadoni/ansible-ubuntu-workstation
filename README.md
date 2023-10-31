@@ -40,9 +40,19 @@ Using `lxc`, a simple virtual system container can be created with:
 
 ```sh
 lxc launch images:ubuntu/22.04 jammy-container
-lxc exec jammy-container -- passwd ubuntu
-lxc exec jammy-container -- apt update && apt install openssh-server
-lxc info jammy-container
+
+# set a password for 'ubuntu' user
+pass='uuu'
+lxc exec jammy-container -- sh -c "echo \"ubuntu:$pass\" | chpasswd"
+
+# install OpenSSH server
+lxc exec jammy-container -- sh -c 'apt update && apt -y install openssh-server'
+
+# find the IPv4 address of the container
+addr="$(lxc info jammy-container | grep 'inet:' | grep -v '127.0.0.1' | cut -d: -f2 | cut -d/ -f1 | tr -d ' ')" && echo "$addr"
+
+# try a connection to add the key to known_hosts file
+ssh -l ubuntu "$addr"
 ```
 
 and cleaned up with:

@@ -43,7 +43,7 @@
   tasks:
 
     - name: System (user independent) roles
-      include_role:
+      ansible.builtin.include_role:
         name: "{{ simple_role }}"
       loop_control:
         loop_var: simple_role
@@ -67,7 +67,7 @@
       tags: user_config
 
     - name: User dependent roles
-      include_role:
+      ansible.builtin.include_role:
         name: "{{ x_role }}"
       vars:
         x_user: "{{ xur.0 }}"
