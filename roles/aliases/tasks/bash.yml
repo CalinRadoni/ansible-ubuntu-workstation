@@ -69,6 +69,6 @@
     line: "{{ item }}"
     state: present
     create: true
-  loop: x_user['bash_aliases']
+  loop: "{{ x_user['bash_aliases'] }}"
   when:
     - x_user['bash_aliases'] is defined

@@ -24,7 +24,7 @@
 
   vars:
     simple_roles:
-      - common
+      # - common
       # - clamav
       # - podman
       # - python
@@ -35,6 +35,7 @@
     x_roles:
       # - debug_user_settings
       - setuser
+      - aliases
       # - keyboard
       # - git
       # - vscode
