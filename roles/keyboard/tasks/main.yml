@@ -17,7 +17,9 @@
   ansible.builtin.assert:
     that:
       - x_user is defined
-      - x_user | type_debug == 'dict'
+      - x_user is not string
+      - x_user is iterable
+      - x_user is mapping
     fail_msg: "x_user dictionary must be defined !"
     quiet: true
 
@@ -26,7 +28,10 @@
     that:
       - x_user['name'] is defined
       - x_user['name'] != None
-      - x_user['name'] | type_debug == 'str'
+      - x_user['name'] is string
+      - x_user['name'] is iterable
+      - x_user['name'] is sequence
+      - x_user['name'] is not mapping
       - x_user['name'] | length > 0
     fail_msg: "x_user['name'] must be set !"
     quiet: true

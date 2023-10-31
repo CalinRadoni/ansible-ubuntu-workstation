@@ -4,7 +4,9 @@
   ansible.builtin.assert:
     that:
       - x_user is defined
-      - x_user | type_debug == 'dict'
+      - x_user is not string
+      - x_user is iterable
+      - x_user is mapping
     fail_msg: "x_user dictionary must be defined !"
     quiet: true
 
@@ -54,4 +56,4 @@
 #   become_user: "{{ x_user['name'] }}"
 #   ansible.builtin.include_tasks: update_settings.yml
 #   when: x_user['vscode_settings'] is defined
-  
+

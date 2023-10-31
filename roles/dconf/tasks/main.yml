@@ -17,7 +17,9 @@
   ansible.builtin.assert:
     that:
       - x_user is defined
-      - x_user | type_debug == 'dict'
+      - x_user is not string
+      - x_user is iterable
+      - x_user is mapping
     fail_msg: "x_user dictionary must be defined !"
     quiet: true
 
