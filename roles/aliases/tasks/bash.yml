@@ -1,0 +1,74 @@
+---
+
+- name: Verify the definition of bash_aliases variable
+  ansible.builtin.assert:
+    that:
+      - x_user['bash_aliases'] is defined
+      - x_user['bash_aliases'] is not string
+      - x_user['bash_aliases'] is not mapping
+      - x_user['bash_aliases'] is iterable
+      - x_user['bash_aliases'] | length > 0
+    fail_msg: "x_user['bash_aliases'] must be set and defined as a list !"
+    quiet: true
+
+- name: Create temporary directory
+  become: true
+  ansible.builtin.file:
+    owner: "{{ x_user['name'] }}"
+    group: root
+    mode: '0770'
+    path: "{{ remote_user_info['home'] }}/.ansible/tmp"
+    state: directory
+
+- name: Get status of .bashrc
+  become: true
+  become_user: "{{ x_user['name'] }}"
+  ansible.builtin.stat:
+    path: "{{ remote_user_info['home'] }}/.bashrc"
+  register: stat_file
+
+- name: Init task variables
+  ansible.builtin.set_fact:
+    remote_user_include: {}
+
+- name: Check inclusion of ~/.bash_aliases
+  become: true
+  become_user: "{{ x_user['name'] }}"
+  check_mode: true
+  changed_when: false
+  ansible.builtin.lineinfile:
+    path: "{{ remote_user_info['home'] }}/.bashrc"
+    regexp: '^( |\t)*\. ~/\.bash_aliases( |\t)*$'
+    state: absent
+  register: remote_user_include
+  when:
+    - stat_file.stat.exists
+    - stat_file.stat.isreg or stat_file.stat.islnk
+    - stat_file.stat.readable
+    - stat_file.stat.writeable
+
+- name: Source ~/.bash_aliases from .bashrc
+  become: true
+  become_user: "{{ x_user['name'] }}"
+  ansible.builtin.blockinfile:
+    path: "{{ remote_user_info['home'] }}/.bashrc"
+    block: |
+      if [ -f ~/.bash_aliases ]; then
+          . ~/.bash_aliases
+      fi
+    backup: yes
+  when:
+    - remote_user_include['found'] is defined
+    - remote_user_include['found'] == 0
+
+- name: Add alias definitions
+  become: true
+  become_user: "{{ x_user['name'] }}"
+  ansible.builtin.lineinfile:
+    path: "{{ remote_user_info['home'] }}/.bash_aliases"
+    line: "{{ item }}"
+    state: present
+    create: true
+  loop: x_user['bash_aliases']
+  when:
+    - x_user['bash_aliases'] is defined

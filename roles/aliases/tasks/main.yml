@@ -1,0 +1,60 @@
+---
+
+#
+# Note: this role will try to install the `acl` package. It is needed when become an unprivileged user.
+# See [Risks of becoming an unprivileged user](https://docs.ansible.com/ansible-core/2.14/playbook_guide/playbooks_privilege_escalation.html#risks-of-becoming-an-unprivileged-user) for more information.
+#
+
+- name: Verify x_user variable
+  ansible.builtin.assert:
+    that:
+      - x_user is defined
+      - x_user is not string
+      - x_user is iterable
+      - x_user is mapping
+    fail_msg: "'x_user' dictionary must be defined !"
+    quiet: true
+
+- name: Verify required string variables
+  ansible.builtin.assert:
+    that:
+      - x_user['name'] is defined
+      - x_user['name'] != None
+      - x_user['name'] | length > 0
+    fail_msg: "x_user['name'] must be set !"
+    quiet: true
+
+- name: Find user's shell
+  become: true
+  become_user: root
+  check_mode: true
+  ansible.builtin.user:
+    name: "{{ x_user['name'] }}"
+    state: present
+  register: remote_user_info
+  changed_when: false
+
+- name: Install the acl package
+  become: true
+  become_user: root
+  ansible.builtin.package:
+    name: acl
+    state: present
+
+- name: Include bash aliases
+  ansible.builtin.include_tasks: bash.yml
+  when:
+    - remote_user_info is defined
+    - remote_user_info['home'] is defined
+    - remote_user_info['shell'] is defined
+    - remote_user_info['shell'] | basename == 'bash'
+    - x_user['bash_aliases'] is defined
+
+# - name: Include zsh aliases
+#   ansible.builtin.include_tasks: zsh.yml
+#   when:
+#     - remote_user_info is defined
+#     - remote_user_info['home'] is defined
+#     - remote_user_info['shell'] is defined
+#     - remote_user_info['shell'] | basename == 'zsh'
+#     - x_user['zsh_aliases'] is defined
