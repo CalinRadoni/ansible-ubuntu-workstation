@@ -1,12 +1,17 @@
 # Ansible roles for Ubuntu laptop or desktop install
 
-**Note begin**: I am rebuilding this repository. What must be done:
+**Note 1**: This repository is not a finished product ! For me it seems too complex to be used at large.
+For quick tasks I am using simpler playbooks and scripts, like those from the [Scripts](https://github.com/CalinRadoni/Scripts) repository.
+
+**Note 2**: Coding best practices, linting and so on were not a priority for this repository, some of these are tests and proof of concept code !
+
+**Note 3 begin**: I am rebuilding this repository. Someof the changes that must be done:
 
 - the **settings** section from `vscode` role MUST be rebuilt
 - `vscode` role should be rebuilt to include the *profiles* feature
 - `wordlists` role MUST be rebuilt
 
-**Note end**.
+**Note 3 end**.
 
 This repository contains some roles meant to be used after a basic Ubuntu installation.
 The defined roles are:
