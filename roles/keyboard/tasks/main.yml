@@ -87,14 +87,14 @@
           </layout>
         insertbefore: '</layoutList>'
         marker: "<!-- {{ item.key }} {mark} ANSIBLE MANAGED BLOCK -->"
-        backup: yes
+        backup: true
       loop: "{{ kbd_profiles | dict2items }}"
       notify:
         - Reconfigure xkb-data
 
     - name: Create the list of keyboard profiles
       ansible.builtin.set_fact:
-        kbd_profiles_list: "{{ kbd_profiles.keys() | list | map('regex_replace', '(.+)', \"('xkb', '\\1')\") | list | join (', ') }}"
+        kbd_profiles_list: "{{ kbd_profiles.keys() | list | map('regex_replace', '(.+)', \"('xkb', '\\1')\") | list | join(', ') }}"
 
     - name: Create the string of keyboard profiles
       ansible.builtin.set_fact:

@@ -38,31 +38,31 @@
   become_user: "{{ x_user['name'] }}"
   block:
 
-  - name: Set the GTK theme
-    community.general.dconf:
-      key: "/org/gnome/desktop/interface/gtk-theme"
-      value: "'{{ x_user['dconf']['GTK_theme'] }}'"
-      state: present
-    when: x_user['dconf']['GTK_theme'] is defined
+    - name: Set the GTK theme
+      community.general.dconf:
+        key: "/org/gnome/desktop/interface/gtk-theme"
+        value: "'{{ x_user['dconf']['GTK_theme'] }}'"
+        state: present
+      when: x_user['dconf']['GTK_theme'] is defined
 
-  - name: Auto-hide the Dock
-    community.general.dconf:
-      key: "/org/gnome/shell/extensions/dash-to-dock/dock-fixed"
-      value: "{% if x_user['dconf']['fixed_dock'] %}true{% else %}false{% endif %}"
-      state: present
-    when: x_user['dconf']['fixed_dock'] is defined
+    - name: Auto-hide the Dock
+      community.general.dconf:
+        key: "/org/gnome/shell/extensions/dash-to-dock/dock-fixed"
+        value: "{% if x_user['dconf']['fixed_dock'] %}true{% else %}false{% endif %}"
+        state: present
+      when: x_user['dconf']['fixed_dock'] is defined
 
-  - name: Set the shortcuts
-    community.general.dconf:
-      key: "{{ item.key }}"
-      value: "{{ item.value }}"
-      state: present
-    loop: "{{ x_user['dconf']['media_keys'] | dict2items }}"
-    when: x_user['dconf']['media_keys'] is defined
+    - name: Set the shortcuts
+      community.general.dconf:
+        key: "{{ item.key }}"
+        value: "{{ item.value }}"
+        state: present
+      loop: "{{ x_user['dconf']['media_keys'] | dict2items }}"
+      when: x_user['dconf']['media_keys'] is defined
 
-  - name: Set the list of favorite apps
-    community.general.dconf:
-      key: "/org/gnome/shell/favorite-apps"
-      value: "{{ x_user['dconf']['favorite_apps'] }}"
-      state: present
-    when: x_user['dconf']['favorite_apps'] is defined
+    - name: Set the list of favorite apps
+      community.general.dconf:
+        key: "/org/gnome/shell/favorite-apps"
+        value: "{{ x_user['dconf']['favorite_apps'] }}"
+        state: present
+      when: x_user['dconf']['favorite_apps'] is defined

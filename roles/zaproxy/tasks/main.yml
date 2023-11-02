@@ -15,7 +15,7 @@
     repo: 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/home_cabelo.gpg] http://download.opensuse.org/repositories/home:/cabelo/xUbuntu_20.04/ /'
     filename: 'home:cabelo.list'
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Install OWASP ZAP
   become: true

@@ -9,6 +9,7 @@
   ansible.builtin.get_url:
     url: "http://downloads.skullsecurity.org/passwords/{{ wordlist_name }}.bz2"
     dest: "{{ temp_dl_dir.path }}"
+    mode: '0640'
   when: not wordlist_status.stat.exists
 
 - name: Extract "{{ wordlist_name }}"

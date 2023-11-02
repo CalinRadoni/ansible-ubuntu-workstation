@@ -12,10 +12,10 @@
   become: true
   become_user: root
   ansible.builtin.apt_repository:
-    repo: "deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/kubic.podman.release.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /"
+    repo: 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/kubic.podman.release.gpg] https://download.opensuse.org/repositories/devel:/kubic:/libcontainers:/stable/xUbuntu_20.04/ /'
     filename: "podman"
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Install Podman and packages from Kubic repository
   become: true
@@ -27,4 +27,3 @@
       - slirp4netns
       - fuse-overlayfs
     state: present
-

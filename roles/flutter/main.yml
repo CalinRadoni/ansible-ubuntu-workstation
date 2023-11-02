@@ -22,4 +22,4 @@
   become_user: root
   community.general.snap:
     name: flutter
-    classic: yes
+    classic: true

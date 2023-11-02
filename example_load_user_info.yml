@@ -1,29 +1,27 @@
 ---
-
 # ansible-playbook -i inventories/production/laptop.yml example_load_user_info.yml
 
 - name: 'Ansible for Ubuntu configuration'
   hosts: all
   gather_facts: false
-
   tasks:
 
-  - name: Load user info
-    ansible.builtin.include_tasks:
-      file: tasks/load_user_info.yml
-    loop_control:
-      loop_var: file_name
-    loop: "{{ userlist }}"
+    - name: Load user info
+      ansible.builtin.include_tasks:
+        file: tasks/load_user_info.yml
+      loop_control:
+        loop_var: file_name
+      loop: "{{ userlist }}"
 
-  - name: Display the list
-    ansible.builtin.debug:
-      var: user_settings
+    - name: Display the list
+      ansible.builtin.debug:
+        var: user_settings
 
-  - name: Parse the list and display selected data
-    ansible.builtin.debug:
-      msg: "{{ x_user['name'] }}"
-    loop_control:
-      label: "Data for {{ x_user['name'] }}"
-      loop_var: x_user
-    loop: "{{ user_settings }}"
-    when: x_user['name'] is defined
+    - name: Parse the list and display selected data
+      ansible.builtin.debug:
+        msg: "{{ x_user['name'] }}"
+      loop_control:
+        label: "Data for {{ x_user['name'] }}"
+        loop_var: x_user
+      loop: "{{ user_settings }}"
+      when: x_user['name'] is defined

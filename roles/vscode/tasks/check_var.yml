@@ -8,5 +8,5 @@
 
 - name: Change the key's value
   ansible.builtin.set_fact:
-    imported_vscode_settings: "{{ imported_vscode_settings | combine({ item.key: item.value }) }}"
+    imported_vscode_settings: "{{ imported_vscode_settings | combine({item.key: item.value}) }}"
   when: current_val|string != item.value|string

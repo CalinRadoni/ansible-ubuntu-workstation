@@ -2,7 +2,7 @@
 
 # Variables:
 #
-# - freshclam_checks, defaults to 24, restricted in this role to [1..48].
+# - clamav_freshclam_checks, defaults to 24, restricted in this role to [1..48].
 
 - name: Check OS family
   ansible.builtin.assert:
@@ -10,12 +10,12 @@
     fail_msg: "This role is implemented only for Debian OS family !"
     quiet: true
 
-- name: Check freshclam_checks variable
+- name: Check clamav_freshclam_checks variable
   ansible.builtin.assert:
     that:
-      - freshclam_checks is number and freshclam_checks is integer
-      - freshclam_checks > 0 and freshclam_checks < 49
-    fail_msg: "freshclam_checks must be an integer between 1 and 48 !"
+      - clamav_freshclam_checks is number and clamav_freshclam_checks is integer
+      - clamav_freshclam_checks > 0 and clamav_freshclam_checks < 49
+    fail_msg: "clamav_freshclam_checks must be an integer between 1 and 48 !"
     quiet: true
 
 - name: Install clamav
@@ -32,7 +32,7 @@
   become_user: root
   ansible.builtin.service:
     name: clamav-freshclam.service
-    enabled: yes
+    enabled: true
     state: started
 
 - name: Set freshclam's number of checks per day
@@ -41,6 +41,6 @@
   ansible.builtin.lineinfile:
     dest: /etc/clamav/freshclam.conf
     regexp: "^Checks "
-    line: "Checks {{ freshclam_checks }}"
+    line: "Checks {{ clamav_freshclam_checks }}"
   notify:
     - Restart freshclam

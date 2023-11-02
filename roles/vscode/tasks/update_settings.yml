@@ -16,7 +16,7 @@
   ansible.builtin.copy:
     content: "{}"
     dest: "{{ local_user_registered.home }}/.config/Code/User/settings.json"
-    force: no
+    force: false
     mode: 'u=rw,g=r,o='
 
 - name: Read the file content
@@ -37,4 +37,4 @@
     content: "{{ imported_vscode_settings | to_nice_json }}"
     dest: "{{ local_user_registered.home }}/.config/Code/User/settings.json"
     mode: 'u=rw,g=r,o='
-    backup: yes
+    backup: true

@@ -21,7 +21,7 @@
     repo: 'deb [arch=amd64 signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/ms-teams stable main'
     filename: 'teams'
     state: present
-    update_cache: yes
+    update_cache: true
 
 - name: Install Teams
   become: true

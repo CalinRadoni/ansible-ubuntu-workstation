@@ -4,6 +4,6 @@
   ansible.builtin.include_tasks: "{{ item }}"
   with_first_found:
     - files:
-        - "{{ role_path }}/tasks/install-{{ ansible_distribution }}-{{ ansible_distribution_version}}.yml"
+        - "{{ role_path }}/tasks/install-{{ ansible_distribution }}-{{ ansible_distribution_version }}.yml"
         - "{{ role_path }}/tasks/install-{{ ansible_distribution }}.yml"
         - "{{ role_path }}/tasks/install.yml"

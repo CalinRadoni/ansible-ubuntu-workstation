@@ -9,4 +9,5 @@
   ansible.builtin.get_url:
     url: "{{ wordlist_URL }}"
     dest: "{{ local_user_registered.home }}/wordlists/{{ wordlist_URL | urlsplit('path') | basename }}"
+    mode: '0640'
   when: not wordlist_status.stat.exists

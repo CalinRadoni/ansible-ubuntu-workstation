@@ -17,7 +17,9 @@
 # ansible-playbook --ask-become-pass -i inventories/production/laptop.yml --skip-tags user_config laptop-jammy.yml
 # ansible-playbook --ask-become-pass -i inventories/production/laptop.yml --skip-tags install laptop-jammy.yml
 #
-# ansible-playbook --user=ubuntu --ask-pass --ask-become-pass -i inventories/example/hosts.yml --limit=laptop2 laptop-jammy.yml
+# ansible-playbook --user=ubuntu --ask-pass --ask-become-pass \
+#   -i inventories/example/hosts.yml --limit=laptop2 \
+#   laptop-jammy.yml
 
 - name: 'Ansible for Ubuntu configuration'
   hosts: all

@@ -56,7 +56,7 @@
       if [ -f ~/.bash_aliases ]; then
           . ~/.bash_aliases
       fi
-    backup: yes
+    backup: true
   when:
     - remote_user_include['found'] is defined
     - remote_user_include['found'] == 0
@@ -69,6 +69,8 @@
     line: "{{ item }}"
     state: present
     create: true
+    owner: "{{ x_user['name'] }}"
+    mode: '0644'
   loop: "{{ x_user['bash_aliases'] }}"
   when:
     - x_user['bash_aliases'] is defined

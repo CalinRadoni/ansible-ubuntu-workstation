@@ -1,7 +1,7 @@
 ---
 
 #
-# Note: firewalld 'needs' iptables (?) so do not remove iptables
+# Note: firewalld 'needs' iptables (? when? is just an alias now ? since when?) so do not remove iptables
 #
 
 - name: Install nftables and firewalld
@@ -14,12 +14,12 @@
     - nftables
     - firewalld
 
-- name: nftables and firewalld should be enabled and running
+- name: Enable nftables and firewalld services
   become: true
   become_user: root
   ansible.builtin.service:
     name: '{{ item }}'
-    enabled: yes
+    enabled: true
     state: started
   loop:
     - nftables.service
